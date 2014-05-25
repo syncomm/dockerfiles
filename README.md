@@ -10,9 +10,10 @@ host filesystem socket (ex. /tmp/.X11-unix/X0). This can be done in
 most cases with:
 
 ```
-sudo docker run -rm _-v /tmp/.X11-unix/:/tmp/.X11-unix/_ -i -t fedora /bin/bash
+sudo docker run -rm -v /tmp/.X11-unix/:/tmp/.X11-unix/ -i -t fedora /bin/bash
 ```
 
+_-v_ is for volume mapping and can be invoked multiple times for the same container.
 Sound can also be forwarded this way through sharing `/dev/snd/`
 
 

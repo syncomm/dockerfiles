@@ -9,8 +9,14 @@ the DISPLAY environment to unix:(your host DISPLAY) and share the
 host filesystem socket (ex. /tmp/.X11-unix/X0). This can be done in
 most cases with:
 
+*Host:*
 ```
 sudo docker run -rm -v /tmp/.X11-unix/:/tmp/.X11-unix/ -i -t fedora /bin/bash
+```
+
+*Container:*
+```
+export DISPLAY=unix:0
 ```
 
 _-v_ is for volume mapping and can be invoked multiple times for the same container.

@@ -8,10 +8,9 @@
 # by Gregory S. Hayes <ghayes@redhat.com>
 #
 ##################################################################
+FROM fedora
 
 MAINTAINER Gregory S. Hayes <ghayes@redhat.com>
-
-FROM fedora
 
 RUN yum -y install firefox xauth cabextract wget xorg-x11-font-utils
 RUN yum -y groupinstall Fonts
@@ -32,4 +31,4 @@ ENV DISPLAY unix:0
 ADD start-netflix.sh /usr/bin/start-netflix.sh
 RUN chmod +x /usr/bin/start-netflix.sh
 
-# ENTRYPOINT "/usr/bin/start-netflix.sh"
+ENTRYPOINT "/usr/bin/start-netflix.sh"

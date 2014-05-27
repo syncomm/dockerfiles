@@ -20,6 +20,7 @@ export DISPLAY=unix:0
 ```
 
 _-v_ is for volume mapping and can be invoked multiple times for the same container.
-Sound can also be forwarded this way through sharing `/dev/snd/`
+Sound can also be forwarded this way through sharing Pulseaudio, sockets and setting 
+PULSE_SRVER on the container to point at the socket.
 
 

@@ -17,7 +17,9 @@ Todo:
 Build:
 
 `git clone https://github.com/syncomm/dockerfiles.git`
+
 `cd dockerfiles/netflix`
+
 `sudo docker build -t syncomm/netflix .`
 
 Run with the supplied script [docker-netflix.sh](https://raw.githubusercontent.com/syncomm/dockerfiles/master/netflix/docker-netflix.sh) to transfer your X11 cookie and set up the Pulseaudio socket.

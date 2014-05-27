@@ -1,6 +1,6 @@
-# docker-netflix #
+# syncomm/netflix #
 
-Container to enable a Netflix player through PipeLight and Firefox.
+A docker container to enable a Netflix player through PipeLight and Firefox.
 
 Working:
 * You can log in and watch Netflix!

@@ -1,6 +1,6 @@
 # docker-netflix #
 
-Container to enable a Netflix player through PipeLight and FireFox.
+Container to enable a Netflix player through PipeLight and Firefox.
 
 Working:
 * You can log in and watch Netflix!

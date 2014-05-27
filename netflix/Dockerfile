@@ -21,7 +21,6 @@ RUN yum -y install pipelight
 RUN pipelight-plugin --update
 RUN /usr/bin/yes | pipelight-plugin --enable silverlight
 RUN echo 'pref("general.useragent.override", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:15.0) Gecko/20120427 Firefox/15.0a1");' >> /usr/lib64/firefox/browser/defaults/preferences/firefox-redhat-default-prefs.js
-RUN echo 'pref("browser.tabs.forceHide", true);' >> /usr/lib64/firefox/browser/defaults/preferences/firefox-redhat-default-prefs.js
 RUN wget http://ix.io/8H3 -O /usr/share/pipelight/pipelight-hw-accel
 RUN chmod +x /usr/share/pipelight/pipelight-hw-accel
 RUN sed -i.bak -e 's/...usr.bin.id -u. -eq 0/1 \-eq 0/g' /usr/share/pipelight/pipelight-hw-accel

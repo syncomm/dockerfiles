@@ -70,5 +70,5 @@ export WINEDEBUG=-all
 echo -e "${red}[WARNING] * Disabling HW accelleration${NC}" 
 WINE=/usr/bin/wine /usr/share/pipelight/pipelight-hw-accel --disable 2>&1 >> /dev/null
 echo -e "${lpurp}Launching NetFlix!${NC}"
-PULSE_SERVER=/tmp/.pulse-socket firefox http://www.netflix.com 2>&1 >> /dev/null
+PULSE_SERVER=/tmp/.pulse-socket firefox -no-remote http://www.netflix.com 2>&1 >> /dev/null
 echo -e "${lpurp}Exiting! Goodbye${NC}"

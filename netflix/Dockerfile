@@ -1,6 +1,6 @@
 ##################################################################
 # Container: syncomm/netflix
-# Version: 0.2.0
+# Version: 0.2.1
 #
 # Description:
 # A container for running firefox and pipelight to access netflix

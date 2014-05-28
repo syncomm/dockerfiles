@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+
+usage()
+{
+	echo ""
+	echo "Usage: hw-accel-change OPTIONS"
+	echo ""
+	echo "Environment variables:"
+	echo "  WINE                  path to the wine executable"
+	echo "  WINEPREFIX            usually \$HOME/.wine-pipelight"
+	echo "  WINEARCH              usually win32"
+	echo ""
+	echo "Options:"
+	echo "  --disable             Disable HW acceleration"
+	echo "  --enable              Enable HW acceleration"
+	echo "  --force               Force HW acceleration"
+	echo ""
+}
+
+# Print usage message when no arguments are given at all
+if [ $# -eq 0 ]; then
+	usage
+	exit 0
+fi
+
+# Don't run this as root
+if [ $(/usr/bin/id -u) -eq 0 ]; then
+	echo "ERROR: You should not run this as root!" >&2
+	exit 1
+fi
+
+# Check for environment variables
+if [ -z "$WINE" ]; then
+	export WINE="/opt/wine-compholio/bin/wine"
+
+fi
+if [ -z "$WINEPREFIX" ]; then
+	export WINEPREFIX="$HOME/.wine-pipelight"
+fi
+if [ -z "$WINEARCH" ]; then
+	export WINEARCH="win32"
+fi
+
+HWACCEL_DISABLE=0
+HWACCEL_FORCE=0
+
+while [[ $# > 0 ]] ; do
+	CMD="$1"; shift
+	case "$CMD" in
+		--enable)
+			HWACCEL_DISABLE="0"; HWACCEL_FORCE="0"
+			;;
+		--disable)
+			HWACCEL_DISABLE="1"; HWACCEL_FORCE="0"
+			;;
+		--force)
+			HWACCEL_DISABLE="0"; HWACCEL_FORCE="1"
+			;;
+		--help)
+			usage
+			exit 1
+			;;
+		*)
+			echo "ERROR: Unknown argument $CMD." >&2
+			exit 1
+			;;
+	esac
+done
+
+tmpfile=$(mktemp)
+[ -f "$tmpfile" ] || exit 1
+
+( 	echo "REGEDIT4"
+	echo ""
+	echo "[HKEY_CURRENT_USER\\Software\\Microsoft\\Silverlight]"
+	echo "\"DisableGPUAcceleration\"=dword:0000000$HWACCEL_DISABLE"
+	echo "\"ForceGPUAcceleration\"=dword:0000000$HWACCEL_FORCE"
+) > "$tmpfile"
+
+"$WINE" regedit "$tmpfile"; res=$?
+
+# Cleanup
+rm "$tmpfile"
+
+if [ "$res" -ne 0 ]; then
+	echo "ERROR: Something went wrong while trying to change the GPUAcceleration settings." >&2
+fi
+
+# Successful
+exit "$res"

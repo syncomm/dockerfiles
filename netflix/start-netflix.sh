@@ -1,7 +1,7 @@
 #! /bin/bash
 ##################################################################
 # Script: start-netflix.sh
-# Version: 0.1.1
+# Version: 0.2.0
 #
 # Description:
 # The script to start netflix inside the container
@@ -26,6 +26,7 @@ then
     echo -e "${red}[ERROR] * No X11 socket transfered! Please connect container with \"-v /tmp/.X11-unix:/tmp/.X11-unix\"${NC}"
     exit 1
 fi
+export DISPLAY="unix:0"
 
 echo -e "${lpurp}Adding X11 Cookie $XCOOKIE ${NC}"
 xauth add $XCOOKIE
@@ -42,12 +43,15 @@ then
 fi
 
 # TODO:
-# Possibly needed for HW accel and alsa
+# Possibly needed for HW accel and alsa:
+# pass /dev/device as /tmp/device and link
 # ln -s /tmp/dri/ /dev/dri
 # ln -s /tmp/video0 /dev/video0
 # ln -s /tmp/snd/ /dev/snd   
 
 echo -e "${lpurp}Setting up firefox${NC}" 
+echo 'pref("general.useragent.override", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:15.0) Gecko/20120427 Firefox/15.0a1");' >> /usr/lib64/firefox/browser/defaults/preferences/firefox-redhat-default-prefs.js
+echo 'pref("signon.rememberSignons", false);' >> /usr/lib64/firefox/browser/defaults/preferences/firefox-redhat-default-prefs.js
 mkdir /usr/lib64/firefox/browser/defaults/profile
 mkdir /usr/lib64/firefox/browser/defaults/profile/chrome
 cat << EOF > /usr/lib64/firefox/browser/defaults/profile/chrome/userChrome.css
@@ -66,9 +70,15 @@ namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 }
 EOF
 
+# Reduce output
 export WINEDEBUG=-all
+
 echo -e "${red}[WARNING] * Disabling HW accelleration${NC}" 
+sed -i.bak -e 's/...usr.bin.id -u. -eq 0/1 \-eq 0/g' /usr/share/pipelight/pipelight-hw-accel
 WINE=/usr/bin/wine /usr/share/pipelight/pipelight-hw-accel --disable 2>&1 >> /dev/null
+
 echo -e "${lpurp}Launching NetFlix!${NC}"
 PULSE_SERVER=/tmp/.pulse-socket firefox -no-remote http://www.netflix.com 2>&1 >> /dev/null
+
 echo -e "${lpurp}Exiting! Goodbye${NC}"
+exit 0

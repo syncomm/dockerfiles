@@ -17,7 +17,6 @@ RUN yum -y install firefox xauth pipelight http://sourceforge.net/projects/mscor
 RUN pipelight-plugin --update && pipelight-plugin --accept --enable silverlight
 
 ADD pipelight-hw-accel /usr/share/pipelight/pipelight-hw-accel
-RUN sed -i.bak -e 's/...usr.bin.id -u. -eq 0/1 \-eq 0/g' /usr/share/pipelight/pipelight-hw-accel
 RUN chmod +x /usr/share/pipelight/pipelight-hw-accel
 
 ADD start-netflix.sh /usr/bin/start-netflix.sh

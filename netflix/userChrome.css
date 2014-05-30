@@ -1,0 +1,13 @@
+namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+#searchbar {
+    display: none;
+}
+#urlbar-container {
+    display: none;
+}
+#nav-bar {
+    display: none;
+}
+#TabsToolbar {
+    display: none;
+}

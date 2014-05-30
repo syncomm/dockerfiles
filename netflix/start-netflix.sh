@@ -17,9 +17,9 @@ yellow='\e[1;33m'
 NC='\e[0m' # No Color
 
 echo -e "${lpurp}Checking for X11${NC}" 
-if [ ! -e /.Xauthority ];
+if [ ! -e /home/netflix/.Xauthority ];
 then
-    touch /.Xauthority
+    touch /home/netflix/.Xauthority
 fi
 if [ ! -d /tmp/.X11-unix/ ];
 then
@@ -49,32 +49,10 @@ fi
 # ln -s /tmp/video0 /dev/video0
 # ln -s /tmp/snd/ /dev/snd   
 
-echo -e "${lpurp}Setting up firefox${NC}" 
-echo 'pref("general.useragent.override", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:15.0) Gecko/20120427 Firefox/15.0a1");' >> /usr/lib64/firefox/browser/defaults/preferences/firefox-redhat-default-prefs.js
-echo 'pref("signon.rememberSignons", false);' >> /usr/lib64/firefox/browser/defaults/preferences/firefox-redhat-default-prefs.js
-mkdir /usr/lib64/firefox/browser/defaults/profile
-mkdir /usr/lib64/firefox/browser/defaults/profile/chrome
-cat << EOF > /usr/lib64/firefox/browser/defaults/profile/chrome/userChrome.css
-namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
-#searchbar {
-    display: none;
-}
-#urlbar-container {
-    display: none;
-}
-#nav-bar {
-    display: none;
-}
-#TabsToolbar {
-    display: none;
-}
-EOF
-
 # Reduce output
 export WINEDEBUG=-all
 
 echo -e "${red}[WARNING] * Disabling HW accelleration${NC}" 
-sed -i.bak -e 's/...usr.bin.id -u. -eq 0/1 \-eq 0/g' /usr/share/pipelight/pipelight-hw-accel
 WINE=/usr/bin/wine /usr/share/pipelight/pipelight-hw-accel --disable 2>&1 >> /dev/null
 
 echo -e "${lpurp}Launching NetFlix!${NC}"

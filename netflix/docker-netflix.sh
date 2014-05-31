@@ -39,9 +39,8 @@ echo sudo docker run --rm -e XCOOKIE=\'$XCOOKIE\' -v /tmp/.X11-unix/:/tmp/.X11-u
 
 # Resume screensaver
 echo -e "${lpurp}Resuming Screensaver${NC}" 
-xset s off
-xset s noblank
-xset -dpms
+xset s on
+xset +dpms
 gsettings set org.gnome.desktop.session idle-delay 300
 
 # Remove Pulseaudio socket

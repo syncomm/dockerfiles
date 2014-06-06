@@ -28,14 +28,14 @@ echo -e "${lpurp}Grabbing X11 Cookie of host${NC}"
 XCOOKIE=`xauth list | grep unix | cut -f2 -d"/" | tr -cd '\11\12\15\40-\176' | sed -e 's/  / /g'`
 
 # Create the Pulseaudio Socket
-if [ ! -e /tmp/.pulse-socket ];
+if [ ! -e /tmp/.netflix-pulse-socket ];
 then
     echo -e "${lpurp}Adding Pulseaudio socket at /tmp/.pulse-socket${NC}" 
-    pactl load-module module-native-protocol-unix auth-anonymous=1 socket=/tmp/.pulse-socket
+    pactl load-module module-native-protocol-unix auth-anonymous=1 socket=/tmp/.netflix-pulse-socket
 fi
 
 echo -e "${lpurp}Launching syncomm/netflix container${NC}" 
-echo sudo docker run --rm -e XCOOKIE=\'$XCOOKIE\' -v /tmp/.X11-unix/:/tmp/.X11-unix/ -v /tmp/.pulse-socket:/tmp/.pulse-socket -t syncomm/netflix | sh
+echo sudo docker run --rm -e XCOOKIE=\'$XCOOKIE\' -v /tmp/.X11-unix/:/tmp/.X11-unix/ -v /tmp/.netflix-pulse-socket:/tmp/.netflix-pulse-socket -t syncomm/netflix | sh
 
 # Resume screensaver
 echo -e "${lpurp}Resuming Screensaver${NC}" 

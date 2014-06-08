@@ -16,19 +16,8 @@ lpurp='\e[1;35m'
 yellow='\e[1;33m'
 NC='\e[0m' # No Color
 
-echo -e "${lpurp}Checking for X11${NC}" 
-if [ ! -e /.Xauthority ];
-then
-    touch /.Xauthority
-fi
-if [ ! -d /tmp/.X11-unix/ ];
-then
-    echo -e "${red}[ERROR] * No X11 socket transfered! Please connect container with \"-v /tmp/.X11-unix:/tmp/.X11-unix\"${NC}"
-    exit 1
-fi
-
-echo -e "${lpurp}Adding X11 Cookie $XCOOKIE ${NC}"
-xauth add $XCOOKIE
+echo -e "${lpurp}Adding SSH Key${NC}" 
+echo "$SSHKEY" >> /home/pcsx2/.ssh/authorized_keys
 
 echo -e "${lpurp}Checking for Pulseaudio${NC}" 
 if [ ! -e /tmp/.pulse-socket ];
@@ -41,12 +30,4 @@ then
     exit 1
 fi
 
-# TODO:
-# Possibly needed for HW accel and alsa
-# ln -s /tmp/dri/ /dev/dri
-# ln -s /tmp/video0 /dev/video0
-# ln -s /tmp/snd/ /dev/snd   
-
-echo -e "${lpurp}Launching PCSX2!${NC}"
-PULSE_SERVER=/tmp/.pulse-socket /usr/games/pcsx2 2>&1 >> /dev/null
-echo -e "${lpurp}Exiting! Goodbye${NC}"
+/usr/sbin/sshd -D 

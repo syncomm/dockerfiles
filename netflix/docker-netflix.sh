@@ -21,7 +21,8 @@ echo -e "${lpurp}Stopping Screensaver${NC}"
 xset s off
 xset s noblank
 xset -dpms
-gsettings set org.gnome.desktop.session idle-delay 0
+# TODO: Figure out what is happening on gnome 3
+# gsettings set org.gnome.desktop.session idle-delay 0
 
 # Get the X11 Cookie to pass
 echo -e "${lpurp}Grabbing X11 Cookie of host${NC}" 
@@ -41,9 +42,10 @@ echo sudo docker run --rm -e XCOOKIE=\'$XCOOKIE\' -v /tmp/.X11-unix/:/tmp/.X11-u
 echo -e "${lpurp}Resuming Screensaver${NC}" 
 xset s on
 xset +dpms
-gsettings set org.gnome.desktop.session idle-delay 300
+# TODO: Figure out what is happening on gnome 3
+# gsettings set org.gnome.desktop.session idle-delay 300
 
-# Remove Pulseaudio socket
+# TODO: Remove Pulseaudio socket correctly
 # echo -e "${lpurp}Removing Pulseaudio socket${NC}" 
 # pactl unload-module module-native-protocol-unix
 

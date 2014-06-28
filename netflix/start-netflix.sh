@@ -53,7 +53,7 @@ fi
 export WINEDEBUG=-all
 
 echo -e "${lpurp}Checking Pipelight Install${NC}" 
-WINE=/usr/bin/wine pipelight-plugin --system-check 2>&1 | grep -E 'PASS|FAIL'
+WINE=/usr/bin/wine pipelight-plugin --system-check 2>&1 | grep -E 'PASS|FAIL|32 bit|64 bit'
 
 echo -e "${red}[WARNING] * Disabling HW accelleration${NC}" 
 # WINE=/usr/bin/wine /usr/share/pipelight/pipelight-hw-accel --disable 2>&1 >> /dev/null

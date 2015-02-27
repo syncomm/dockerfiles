@@ -1,4 +1,4 @@
-# syncomm/netflix #
+# syncomm/spotify #
 
 A docker container to enable Spotify on all Linux distributions.
 

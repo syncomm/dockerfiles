@@ -24,7 +24,7 @@
 #                                                                       #
 #########################################################################
 
-FROM fedora
+FROM fedora:20
 
 MAINTAINER Gregory S. Hayes <ghayes@redhat.com>
 

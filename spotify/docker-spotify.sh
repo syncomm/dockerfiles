@@ -54,7 +54,7 @@ fi
 
 # Launch syncomm/spotify container 
 echo -e "${lpurp}Launching syncomm/spotify container${NC}" 
-echo sudo docker run --rm -e XCOOKIE=\'$XCOOKIE\' -v /tmp/.X11-unix/:/tmp/.X11-unix/ -v /tmp/.spotify-pulse-socket:/tmp/.spotify-pulse-socket -v ~/.docker-spotify/cache:/home/spotify/.cache -v ~/.docker-spotify/config:/home/spotify/.config -t syncomm/spotify | sh
+echo docker run --rm --name spotify -e XCOOKIE=\'$XCOOKIE\' -v /tmp/.X11-unix/:/tmp/.X11-unix/ -v /tmp/.spotify-pulse-socket:/tmp/.spotify-pulse-socket -v ~/.docker-spotify/cache:/home/spotify/.cache -v ~/.docker-spotify/config:/home/spotify/.config -t syncomm/spotify | sh
 # Need to clean up Pulseaudio socket !!
 # pactl unload-module module-native-protocol-unix
 

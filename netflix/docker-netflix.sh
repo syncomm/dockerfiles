@@ -52,7 +52,7 @@ then
 fi
 
 echo -e "${lpurp}Launching syncomm/netflix container${NC}" 
-echo sudo docker run --rm -e XCOOKIE=\'$XCOOKIE\' -v /tmp/.X11-unix/:/tmp/.X11-unix/ -v /tmp/.netflix-pulse-socket:/tmp/.netflix-pulse-socket -t syncomm/netflix | sh
+echo docker run --rm -e XCOOKIE=\'$XCOOKIE\' -v /tmp/.X11-unix/:/tmp/.X11-unix/ -v /tmp/.netflix-pulse-socket:/tmp/.netflix-pulse-socket -t syncomm/netflix | sh
 
 # Resume screensaver
 echo -e "${lpurp}Resuming Screensaver${NC}" 

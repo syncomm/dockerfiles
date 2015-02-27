@@ -43,5 +43,6 @@ RUN useradd -d /home/spotify -p "!" -m -g audio -c "Docker-Spotify" spotify
 USER spotify
 ENV HOME /home/spotify
 
-# ENTRYPOINT "/bin/bash"
+VOLUME ["/home/spotify/.cache", "/home/spotify/.config"]
+
 ENTRYPOINT "/usr/bin/start-spotify.sh"

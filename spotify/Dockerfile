@@ -38,7 +38,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y install libpangoxft-1.0-0 libpango
 ADD start-spotify.sh /usr/bin/start-spotify.sh
 RUN chmod +x /usr/bin/start-spotify.sh
 
-RUN echo 'spotify ALL = NOPASSWD: ALL' > /etc/sudoers.d/spotify && chmod 0440 /etc/sudoers.d/spotify
 RUN useradd -d /home/spotify -p "!" -m -g audio -c "Docker-Spotify" spotify
 USER spotify
 ENV HOME /home/spotify

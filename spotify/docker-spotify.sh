@@ -40,7 +40,7 @@ XCOOKIE=`xauth list | grep unix | cut -f2 -d"/" | tr -cd '\11\12\15\40-\176' | s
 if [ ! -e /tmp/.spotify-pulse-socket ];
 then
     echo -e "${lpurp}Adding Pulseaudio socket at /tmp/.spotify-pulse-socket${NC}" 
-    pactl load-module module-native-protocol-unix auth-anonymous=1 socket=/tmp/.spotify-pulse-socket
+    SPOTIFYSOCKET=`pactl load-module module-native-protocol-unix auth-anonymous=1 socket=/tmp/.spotify-pulse-socket`
 fi
 
 # Persistant cache and config 
@@ -55,7 +55,9 @@ fi
 # Launch syncomm/spotify container 
 echo -e "${lpurp}Launching syncomm/spotify container${NC}" 
 echo docker run --rm --name spotify -e XCOOKIE=\'$XCOOKIE\' -v /tmp/.X11-unix/:/tmp/.X11-unix/ -v /tmp/.spotify-pulse-socket:/tmp/.spotify-pulse-socket -v ~/.docker-spotify/cache:/home/spotify/.cache -v ~/.docker-spotify/config:/home/spotify/.config -t syncomm/spotify | sh
-# Need to clean up Pulseaudio socket !!
-# pactl unload-module module-native-protocol-unix
+
+# Clean up Pulseaudio socket
+echo -e "${lpurp}Removing Pulseaudio socket at /tmp/.spotify-pulse-socket${NC}" 
+pactl unload-module $SPOTIFYSOCKET
 
 exit 0

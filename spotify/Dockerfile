@@ -1,6 +1,6 @@
 #########################################################################
 # Container: syncomm/spotify                                            #
-# Version: 0.2.1                                                        #
+# Version: 0.5.0                                                        #
 #                                                                       #
 # Description:                                                          #
 # A container for running firefox and pipelight to access netflix       #
@@ -42,6 +42,6 @@ RUN useradd -d /home/spotify -p "!" -m -g audio -c "Docker-Spotify" spotify
 USER spotify
 ENV HOME /home/spotify
 
-VOLUME ["/home/spotify/.cache", "/home/spotify/.config"]
+VOLUME /home/spotify/
 
 ENTRYPOINT "/usr/bin/start-spotify.sh"

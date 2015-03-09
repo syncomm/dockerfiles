@@ -2,7 +2,7 @@
 
 #########################################################################
 # Script: docker-spotify.sh                                             #
-# Version: 0.1.0                                                        #
+# Version: 0.5.0                                                        #
 #                                                                       #
 # Description:                                                          #
 # The script to start the syncomm/netflix container                     #
@@ -44,17 +44,23 @@ then
 fi
 
 # Persistant cache and config 
-if [ ! -e ~/.docker-spotify ];
-then
-    echo -e "${lpurp}Creating local user config and cache at ~/.docker-spotify${NC}"
-    mkdir ~/.docker-spotify
-    mkdir ~/.docker-spotify/config
-    mkdir ~/.docker-spotify/cache
+CONTAINER=$USER-spotify-data
+RUNNING=$(docker inspect --format="{{ .State.Running }}" $CONTAINER 2> /dev/null)
+
+if [ $? -eq 1 ]; then
+    echo -e "${lpurp}Creating user config and cache container $CONTAINER${NC}"
+    CONTAINER_ID=$(docker create -v /home/spotify --name $CONTAINER syncomm/spotify)
+    echo -e "${lpurp}Container $CONTAINER created with id $CONTAINER_ID{NC}"
 fi
 
 # Launch syncomm/spotify container 
 echo -e "${lpurp}Launching syncomm/spotify container${NC}" 
-echo docker run --rm --name spotify -e XCOOKIE=\'$XCOOKIE\' -v /tmp/.X11-unix/:/tmp/.X11-unix/ -v /tmp/.spotify-pulse-socket:/tmp/.spotify-pulse-socket -v ~/.docker-spotify/cache:/home/spotify/.cache -v ~/.docker-spotify/config:/home/spotify/.config -t syncomm/spotify | sh
+echo docker run --rm --name spotify \
+  -e XCOOKIE=\'$XCOOKIE\' \
+  -v /tmp/.X11-unix/:/tmp/.X11-unix/ \
+  -v /tmp/.spotify-pulse-socket:/tmp/.spotify-pulse-socket \
+  --volumes-from $CONTAINER \
+  -t syncomm/spotify | sh
 
 # Clean up Pulseaudio socket
 echo -e "${lpurp}Removing Pulseaudio socket at /tmp/.spotify-pulse-socket${NC}" 

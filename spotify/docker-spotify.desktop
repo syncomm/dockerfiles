@@ -1,10 +1,10 @@
 [Desktop Entry]
 Name=Docker-Spotify
-GenericName=Music Player
+GenericName=Spotify
 Comment=Listen to music using Spotify
-Icon=spotify-client
-Exec=/bin/bash /usr/local/bin/docker-spotify.sh
-TryExec=/bin/bash
+Icon=spotify.svg
+Exec=/usr/local/bin/docker-spotify.sh
+TryExec=/usr/local/bin/docker-spotify.sh
 Terminal=false
 Type=Application
 Categories=Audio;AudioVideo;Player;Qt;

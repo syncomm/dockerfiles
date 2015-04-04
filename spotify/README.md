@@ -1,6 +1,7 @@
 # syncomm/spotify #
 
-![spotify](https://raw.githubusercontent.com/syncomm/dockerfiles/master/spotify/spotify.png) A docker container to enable Spotify on all Linux distributions
+A docker container to enable Spotify on all Linux distributions
+![spotify](https://raw.githubusercontent.com/syncomm/dockerfiles/master/spotify/spotify.png) 
 
 ## Features:
 

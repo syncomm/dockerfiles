@@ -7,12 +7,25 @@ A docker container to enable Spotify on all Linux distributions
 * Ubuntu based container with the official Spotify package
 * Pulseaudio connectivity for audio
 * X11 socket sharing
-* Runs as a normal user (in the docker group)
+* Runs as a normal user (in the [docker group](http://docs.docker.com/installation/ubuntulinux/#giving-non-root-access))
 * Uses a volume container for persistent config and cache
 
 Launch with [docker-spotify.sh](https://raw.githubusercontent.com/syncomm/dockerfiles/master/spotify/docker-spotify.sh) 
 
-> Note: You will need to turn off Hardware Acceleration under Edit->Preferences and restart spotify (once or twice) to enable images!
+> Note: SELinux is problematic for containers that share X11 and 
+> audio. For those who wish to keep SELinux enabled, please see 
+> my [docker-spotify SELinux policy](https://github.com/syncomm/dockerfiles/tree/master/spotify/selinux). Hardware acceleration 
+> is disabled, and for proper operation it shouldn't be re-enabled. 
+> If you don't see images (cove art, etc.) on the very first run, you 
+> may need to restart spotify (once or twice) to enable them.
+
+## Install:
+
+On a system with docker installed, run the following command:
+
+```bash
+curl -s https://raw.githubusercontent.com/syncomm/dockerfiles/master/spotify/docker-spotify.sh | bash
+```
 
 ## Build:
 

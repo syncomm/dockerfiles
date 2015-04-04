@@ -60,7 +60,7 @@ fi
 
 echo -e "${lpurp}Launching Spotify!${NC}"
 pulseaudio -D &
-PULSE_SERVER=/tmp/.spotify-pulse-socket spotify 2>&1 >> /dev/null
+PULSE_SERVER=/tmp/.spotify-pulse-socket spotify --ui.hardware_acceleration=false &>/dev/null
 
 echo -e "${lpurp}Exiting! Goodbye${NC}"
 exit 0

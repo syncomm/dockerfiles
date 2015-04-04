@@ -10,4 +10,4 @@ checkmodule -M -m -o docker-spotify.mod docker-spotify.te
 echo "Packaging module"
 semodule_package -o docker-spotify.pp -m docker-spotify.mod
 echo "Installing module"
-# semodule -i docker-spotify.pp
+semodule -i docker-spotify.pp

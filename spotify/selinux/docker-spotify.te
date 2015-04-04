@@ -1,0 +1,16 @@
+
+module docker-spotify 1.0;
+
+require {
+	type user_tmp_t;
+	type unconfined_t;
+	type svirt_lxc_net_t;
+	type xserver_t;
+	class sock_file write;
+	class unix_stream_socket connectto;
+}
+
+#============= svirt_lxc_net_t ==============
+allow svirt_lxc_net_t unconfined_t:unix_stream_socket connectto;
+allow svirt_lxc_net_t user_tmp_t:sock_file write;
+allow svirt_lxc_net_t xserver_t:unix_stream_socket connectto;

@@ -24,24 +24,25 @@
 #                                                                       #
 #########################################################################
 
-FROM fedora:20
+FROM fedora:21
 
-MAINTAINER Gregory S. Hayes <ghayes@redhat.com>
+MAINTAINER Gregory S. Hayes <syncomm@gmail.com>
 
-RUN curl http://download.opensuse.org/repositories/home:/DarkPlayer:/Pipelight/Fedora_20/home:DarkPlayer:Pipelight.repo > /etc/yum.repos.d/pipelight.repo
-RUN yum -y install attr isdn4k-utils unixODBC sane-backends-libs libv4l mesa-libOSMesa libxslt firefox xauth pipelight http://sourceforge.net/projects/mscorefonts2/files/rpms/msttcore-fonts-installer-2.6-1.noarch.rpm
-RUN pipelight-plugin --update && pipelight-plugin --accept --enable silverlight
+# Install and enable Pipelight
+RUN curl http://download.opensuse.org/repositories/home:/DarkPlayer:/Pipelight/Fedora_21/home:DarkPlayer:Pipelight.repo > /etc/yum.repos.d/pipelight.repo && yum -y install attr isdn4k-utils unixODBC sane-backends-libs libv4l mesa-libOSMesa libxslt firefox xauth pipelight http://sourceforge.net/projects/mscorefonts2/files/rpms/msttcore-fonts-installer-2.6-1.noarch.rpm && pipelight-plugin --update && pipelight-plugin --accept --enable silverlight
 
-ADD start-netflix.sh /usr/bin/start-netflix.sh
-RUN chmod +x /usr/bin/start-netflix.sh
-
-RUN echo 'pref("general.useragent.override", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:15.0) Gecko/20120427 Firefox/15.0a1");' >> /usr/lib64/firefox/browser/defaults/preferences/firefox-redhat-default-prefs.js
-RUN echo 'pref("signon.rememberSignons", false);' >> /usr/lib64/firefox/browser/defaults/preferences/firefox-redhat-default-prefs.js
+# Custom userChrome.css
+RUN echo 'pref("general.useragent.override", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:15.0) Gecko/20120427 Firefox/15.0a1");' >> /usr/lib64/firefox/browser/defaults/preferences/firefox-redhat-default-prefs.js && echo 'pref("signon.rememberSignons", false);' >> /usr/lib64/firefox/browser/defaults/preferences/firefox-redhat-default-prefs.js
 ADD userChrome.css /usr/lib64/firefox/browser/defaults/profile/chrome/userChrome.css
 
-RUN echo 'netflix ALL = NOPASSWD: ALL' > /etc/sudoers.d/netflix && chmod 0440 /etc/sudoers.d/netflix
+# Add netflix user
 RUN useradd -d /home/netflix -p "!" -m -g video -c "Docker-Netflix" netflix
 USER netflix
 ENV HOME /home/netflix
+
+# Add start script
+ADD start-netflix.sh /usr/bin/start-netflix.sh
+
+VOLUME /home/netflix
 
 ENTRYPOINT "/usr/bin/start-netflix.sh"

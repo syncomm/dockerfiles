@@ -7,7 +7,7 @@
 # Description:                                                          #
 # The script to start the syncomm/netflix container                     #
 #                                                                       #
-# Copyright (C) 2014, Gregory S. Hayes <ghayes@redhat.com>              #
+# Copyright (C) 2015, Gregory S. Hayes <ghayes@redhat.com>              #
 #                                                                       #
 # This program is free software; you can redistribute it and/or modify  #
 # it under the terms of the GNU General Public License as published by  #
@@ -32,13 +32,16 @@ lpurp='\e[1;35m'
 yellow='\e[1;33m'
 NC='\e[0m' # No Color
 
-# Sop screensaver (need to detect gsettings)
+# Stop screensaver (need to detect gsettings)
 echo -e "${lpurp}Stopping Screensaver${NC}" 
 xset s off
 xset s noblank
 xset -dpms
 # TODO: Figure out what is happening on gnome 3
 # gsettings set org.gnome.desktop.session idle-delay 0
+# gsettings set org.gnome.desktop.screensaver lock-delay 3600
+# gsettings set org.gnome.desktop.screensaver lock-enabled false
+# gsettings set org.gnome.desktop.screensaver idle-activation-enabled false
 
 # Get the X11 Cookie to pass
 echo -e "${lpurp}Grabbing X11 Cookie of host${NC}" 
@@ -47,12 +50,25 @@ XCOOKIE=`xauth list | grep unix | cut -f2 -d"/" | tr -cd '\11\12\15\40-\176' | s
 # Create the Pulseaudio Socket
 if [ ! -e /tmp/.netflix-pulse-socket ];
 then
-    echo -e "${lpurp}Adding Pulseaudio socket at /tmp/.pulse-socket${NC}" 
-    pactl load-module module-native-protocol-unix auth-anonymous=1 socket=/tmp/.netflix-pulse-socket
+    echo -e "${lpurp}Adding Pulseaudio socket at /tmp/.netflix-pulse-socket${NC}" 
+    NETFLIXSOCKET=`pactl load-module module-native-protocol-unix auth-anonymous=1 socket=/tmp/.netflix-pulse-socket`
+fi
+
+# Persistant cache and config 
+CONTAINER=$USER-netflix-data
+RUNNING=$(docker inspect --format="{{ .State.Running }}" $CONTAINER 2> /dev/null)
+if [ $? -eq 1 ]; then
+  echo -e "${lpurp}Creating user config and cache container $CONTAINER${NC}"
+  CONTAINER_ID=$(docker create -v /home/netflix --name $CONTAINER syncomm/netflix)
+  echo -e "${lpurp}Container $CONTAINER created with id $CONTAINER_ID{NC}"
 fi
 
 echo -e "${lpurp}Launching syncomm/netflix container${NC}" 
-echo docker run --rm -e XCOOKIE=\'$XCOOKIE\' -v /tmp/.X11-unix/:/tmp/.X11-unix/ -v /tmp/.netflix-pulse-socket:/tmp/.netflix-pulse-socket -t syncomm/netflix | sh
+echo docker run --rm -e XCOOKIE=\'$XCOOKIE\' \
+  -v /tmp/.X11-unix/:/tmp/.X11-unix/ \
+  -v /tmp/.netflix-pulse-socket:/tmp/.netflix-pulse-socket \
+  --volumes-from $CONTAINER \
+  -t syncomm/netflix | sh
 
 # Resume screensaver
 echo -e "${lpurp}Resuming Screensaver${NC}" 
@@ -61,8 +77,8 @@ xset +dpms
 # TODO: Figure out what is happening on gnome 3
 # gsettings set org.gnome.desktop.session idle-delay 300
 
-# TODO: Remove Pulseaudio socket correctly
-# echo -e "${lpurp}Removing Pulseaudio socket${NC}" 
-# pactl unload-module module-native-protocol-unix
+# Clean up Pulseaudio socket
+echo -e "${lpurp}Removing Pulseaudio socket at /tmp/.netflix-pulse-socket${NC}" 
+pactl unload-module $NETFLIXSOCKET
 
 exit 0

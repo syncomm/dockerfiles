@@ -12,11 +12,10 @@ A docker container to enable Spotify on all Linux distributions
 
 Launch with [docker-spotify.sh](https://raw.githubusercontent.com/syncomm/dockerfiles/master/spotify/docker-spotify.sh) 
 
-> Note: SELinux is problematic for containers that share X11 and 
-> audio. For those who wish to keep SELinux enabled, please see 
+> Note: For those who wish to keep SELinux enabled, please see 
 > my [docker-spotify SELinux policy](https://github.com/syncomm/dockerfiles/tree/master/spotify/selinux). Hardware acceleration 
-> is disabled, and for proper operation it shouldn't be re-enabled. 
-> If you don't see images (cove art, etc.) on the very first run, you 
+> is disabled, and for proper operation it needs to remain 
+> this way. If you don't see images on the very first run, you
 > may need to restart spotify (once or twice) to enable them.
 
 ## Install:

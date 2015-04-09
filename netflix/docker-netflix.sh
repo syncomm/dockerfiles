@@ -60,7 +60,7 @@ RUNNING=$(docker inspect --format="{{ .State.Running }}" $CONTAINER 2> /dev/null
 if [ $? -eq 1 ]; then
   echo -e "${lpurp}Creating user config and cache container $CONTAINER${NC}"
   CONTAINER_ID=$(docker create -v /home/netflix --name $CONTAINER syncomm/netflix)
-  echo -e "${lpurp}Container $CONTAINER created with id $CONTAINER_ID{NC}"
+  echo -e "${lpurp}Container $CONTAINER created with id $CONTAINER_ID${NC}"
 fi
 
 echo -e "${lpurp}Launching syncomm/netflix container${NC}" 

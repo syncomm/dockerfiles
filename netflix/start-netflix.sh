@@ -2,7 +2,7 @@
 
 #########################################################################
 # Script: start-netflix.sh                                              #
-# Version: 0.2.1                                                        #
+# Version: 0.5.0                                                        #
 #                                                                       #
 # Description:                                                          #
 # The script to start netflix inside the container                      #
@@ -39,7 +39,7 @@ then
 fi
 if [ ! -d /tmp/.X11-unix/ ];
 then
-    echo -e "${red}[ERROR] * No X11 socket transfered! Please connect container with \"-v /tmp/.X11-unix:/tmp/.X11-unix\"${NC}"
+    echo -e "${red}[ERROR] * No X11 socket transfered! Start this container with docker-spotify.sh${NC}"
     exit 1
 fi
 export DISPLAY="unix:0"
@@ -50,32 +50,44 @@ xauth add $XCOOKIE
 echo -e "${lpurp}Checking for Pulseaudio${NC}" 
 if [ ! -e /tmp/.netflix-pulse-socket ];
 then
-    echo -e "${red}[ERROR] * No Pulseaudio socket transfered! Please connect container with \"-v /tmp/.netflix-pulse-socket:/tmp/.netflix-pulse-socket\"${NC}"
-    echo -e "${red}          You can create a Pulseaudio socket by running:${NC}"
-    echo
-    echo -e "${yellow}pactl load-module module-native-protocol-unix auth-anonymous=1 socket=/tmp/.netflix-pulse-socket${NC}"
+    echo -e "${red}[ERROR] * No Pulseaudio socket transfered! Start this container with docker-spotify.sh${NC}"
     echo
     exit 1
 fi
+export PULSE_SERVER=/tmp/.netflix-pulse-socket
 
-# TODO:
-# Possibly needed for HW accel and alsa:
-# pass /dev/device as /tmp/device and link
-# ln -s /tmp/dri/ /dev/dri
-# ln -s /tmp/video0 /dev/video0
-# ln -s /tmp/snd/ /dev/snd   
-
+export WINE=/usr/bin/wine
 # Reduce output
 export WINEDEBUG=-all
 
-echo -e "${lpurp}Checking Pipelight Install${NC}" 
-WINE=/usr/bin/wine pipelight-plugin --system-check 2>&1 | grep -E 'PASS|FAIL|32 bit|64 bit'
-
 echo -e "${red}[WARNING] * Disabling HW accelleration${NC}" 
-# WINE=/usr/bin/wine /usr/share/pipelight/pipelight-hw-accel --disable 2>&1 >> /dev/null
+/usr/share/pipelight/pipelight-hw-accel --disable &>/dev/null
+export PIPELIGHT_GPUACCELERATION=0
+echo -e "${lpurp}Updating Pipelight${NC}" 
+pipelight-plugin --update &>/dev/null
+
+# Clean up on second run only
+if [ -e ~/first-run ]; then
+  echo -e "${lpurp}Cleaning up from first run${NC}" 
+  rm -rf ~/.mozilla
+  rm ~/first-run
+fi
+
+# Detect first run and enable Pipelight
+if [ ! -e ~/.config ]; then
+  echo -e "${yellow}Detected First Run${NC}" 
+  mkdir ~/.config/
+  touch ~/.config/wine-wininet-installer.accept-license
+  touch ~/first-run
+  echo -e "${lpurp}Enabling Pipelight [silverlight]${NC}" 
+  pipelight-plugin --accept --enable silverlight
+  echo -e "${yellow}"
+  pipelight-plugin --system-check 2>&1 | grep -E 'PASS|FAIL|32 bit|64 bit|missing'
+  echo -e "${NC}"
+fi
 
 echo -e "${lpurp}Launching NetFlix!${NC}"
-PULSE_SERVER=/tmp/.netflix-pulse-socket PIPELIGHT_GPUACCELERATION=0 firefox -no-remote http://www.netflix.com 2>&1 >> /dev/null
+firefox -no-remote http://www.netflix.com &>/dev/null
 
 echo -e "${lpurp}Exiting! Goodbye${NC}"
 exit 0

@@ -27,7 +27,8 @@ then
 fi
 
 echo -e "${lpurp}Launching syncomm/pcsx2 container:${NC}" 
-JOB=$(sudo docker run -d -e SSHKEY="$SSHKEY" -v /tmp/.pulse-socket:/tmp/.pulse-socket -v ~/.local/share/docker-pcsx2:/home/pcsx2/.config/pcsx2 -t syncomm/pcsx2)
+JOB=$(sudo docker run -d -e SSHKEY="$SSHKEY" -v /tmp/.pulse-socket:/tmp/.pulse-socket -v /dev/nvidia0:/tmp/nvidia0 -v /dev/nvidiactl:/tmp/nvidiactl -v /dev/dri:/tmp/dri -v ~/.local/share/docker-pcsx2:/home/pcsx2/.config/pcsx2 -t syncomm/pcsx2)
+# JOB=$(sudo docker run -d -e SSHKEY="$SSHKEY" -v /tmp/.pulse-socket:/tmp/.pulse-socket -v ~/.local/share/docker-pcsx2:/home/pcsx2/.config/pcsx2 -t syncomm/pcsx2)
 IPADDR=$(sudo docker inspect $JOB | grep IPAd | awk -F'"' '{print $4}')
 PID=$(sudo docker inspect $JOB | grep Pid |  awk -F'[:,]' '{print $2}')
 echo -e "  ${lpurp}Image:${NC} syncomm/pcsx2"

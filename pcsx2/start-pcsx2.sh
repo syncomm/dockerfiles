@@ -6,7 +6,7 @@
 # Description:
 # The script to start pcsx2 inside the container
 # 
-# by Gregory S. Hayes <ghayes@redhat.com>
+# by Gregory S. Hayes <syncomm@gmail.com>
 #
 ##################################################################
 
@@ -25,7 +25,7 @@ then
     echo -e "${red}[ERROR] * No Pulseaudio socket transfered! Please connect container with \"-v /tmp/.pulse-socket:/tmp/.pulse-socket\"${NC}"
     echo -e "${red}          You can create a Pulseaudio socket by running:${NC}"
     echo
-    exho -e "${yellow}pactl load-module module-native-protocol-unix auth-anonymous=1 socket=/tmp/.pulse-socket${NC}"
+    echo -e "${yellow}pactl load-module module-native-protocol-unix auth-anonymous=1 socket=/tmp/.pulse-socket${NC}"
     echo
     exit 1
 fi

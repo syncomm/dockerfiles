@@ -8,12 +8,12 @@
 # support this instruction set, it does not have enough horse power to run
 # this emulator anyway.
 #
-# by Gregory S. Hayes <ghayes@redhat.com>
+# by Gregory S. Hayes <syncomm@gmail.com>
 #
 ##################################################################
 FROM mjdsys/ubuntu-saucy-i386
 
-MAINTAINER Gregory S. Hayes <ghayes@redhat.com>
+MAINTAINER Gregory S. Hayes <syncomm@gmail.com>
 
 RUN sed 's/main universe$/main restricted universe multiverse/' -i /etc/apt/sources.list && echo 'deb http://ppa.launchpad.net/gregory-hainaut/pcsx2.official.ppa/ubuntu saucy main' >>  /etc/apt/sources.list && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 508A982D7A617FF4 && apt-get update
 RUN apt-get install -y pcsx2 xauth openssh-server
@@ -27,6 +27,7 @@ RUN mkdir -p /home/pcsx2/.ssh
 RUN touch /home/pcsx2/.ssh/authorized_keys
 RUN chmod 0640 /home/pcsx2/.ssh/authorized_keys
 RUN touch /home/pcsx2/.Xauthority
+RUN mkdir -p /home/pcsx2/.config/pcsx2
 RUN chown -R pcsx2:pcsx2 /home/pcsx2
 
 ADD start-pcsx2.sh /usr/bin/start-pcsx2.sh
@@ -34,6 +35,5 @@ RUN chmod +x /usr/bin/start-pcsx2.sh
 
 EXPOSE 22
 
-VOLUME /home/pcsx2/.config/pcsx2
-
-ENTRYPOINT /usr/bin/start-pcsx2.sh
+# ENTRYPOINT /usr/bin/start-pcsx2.sh
+/bin/bash

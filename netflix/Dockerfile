@@ -1,11 +1,11 @@
 #########################################################################
 # Container: syncomm/netflix                                            #
-# Version: 0.2.1                                                        #
+# Version: 0.5.0                                                        #
 #                                                                       #
 # Description:                                                          #
 # A container for running firefox and pipelight to access netflix       #
 #                                                                       #
-# Copyright (C) 2014, Gregory S. Hayes <ghayes@redhat.com>              #
+# Copyright (C) 2014,2015 Gregory S. Hayes <syncomm@gmail.com>          #
 #                                                                       #
 # This program is free software; you can redistribute it and/or modify  #
 # it under the terms of the GNU General Public License as published by  #
@@ -28,8 +28,13 @@ FROM fedora:21
 
 MAINTAINER Gregory S. Hayes <syncomm@gmail.com>
 
-# Install and enable Pipelight
-RUN curl http://download.opensuse.org/repositories/home:/DarkPlayer:/Pipelight/Fedora_21/home:DarkPlayer:Pipelight.repo > /etc/yum.repos.d/pipelight.repo && yum -y install attr isdn4k-utils unixODBC sane-backends-libs libv4l mesa-libOSMesa libxslt firefox xauth pipelight http://sourceforge.net/projects/mscorefonts2/files/rpms/msttcore-fonts-installer-2.6-1.noarch.rpm && pipelight-plugin --update && pipelight-plugin --accept --enable silverlight
+# Install Pipelight
+RUN curl http://download.opensuse.org/repositories/home:/DarkPlayer:/Pipelight/Fedora_21/home:DarkPlayer:Pipelight.repo > /etc/yum.repos.d/pipelight.repo && yum -y install attr isdn4k-utils unixODBC sane-backends-libs libv4l mesa-libOSMesa samba-devel libxslt firefox xauth pipelight http://sourceforge.net/projects/mscorefonts2/files/rpms/msttcore-fonts-installer-2.6-1.noarch.rpm && yum clean all
+
+# Enable Pipelight
+RUN mkdir ~/.config && touch ~/.config/wine-wininet-installer.accept-license
+RUN WINE=/usr/bin/wine pipelight-plugin --update &>/dev/null
+RUN WINE=/usr/bin/wine pipelight-plugin --accept --enable silverlight
 
 # Custom userChrome.css
 RUN echo 'pref("general.useragent.override", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:15.0) Gecko/20120427 Firefox/15.0a1");' >> /usr/lib64/firefox/browser/defaults/preferences/firefox-redhat-default-prefs.js && echo 'pref("signon.rememberSignons", false);' >> /usr/lib64/firefox/browser/defaults/preferences/firefox-redhat-default-prefs.js

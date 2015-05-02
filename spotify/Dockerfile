@@ -5,7 +5,7 @@
 # Description:                                                          #
 # A container for running firefox and pipelight to access netflix       #
 #                                                                       #
-# Copyright (C) 2014, Gregory S. Hayes <ghayes@redhat.com>              #
+# Copyright (C) 2014, 2015 Gregory S. Hayes <syncomm@gmail.com>         #
 #                                                                       #
 # This program is free software; you can redistribute it and/or modify  #
 # it under the terms of the GNU General Public License as published by  #

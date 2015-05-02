@@ -32,16 +32,16 @@ lpurp='\e[1;35m'
 yellow='\e[1;33m'
 NC='\e[0m' # No Color
 
-# Stop screensaver (need to detect gsettings)
+# Stop screensaver 
 echo -e "${lpurp}Stopping Screensaver${NC}" 
-xset s off
-xset s noblank
-xset -dpms
-# TODO: Figure out what is happening on gnome 3
-# gsettings set org.gnome.desktop.session idle-delay 0
-# gsettings set org.gnome.desktop.screensaver lock-delay 3600
-# gsettings set org.gnome.desktop.screensaver lock-enabled false
-# gsettings set org.gnome.desktop.screensaver idle-activation-enabled false
+if hash gsettings 2>/dev/null; then
+  IDLE=`gsettings get org.gnome.desktop.session idle-delay | cut -f 2 -d" "`
+  gsettings set org.gnome.desktop.session idle-delay 0
+else
+  xset s off
+  xset s noblank
+  xset -dpms
+fi
 
 # Get the X11 Cookie to pass
 echo -e "${lpurp}Grabbing X11 Cookie of host${NC}" 
@@ -72,10 +72,12 @@ echo docker run --rm -e XCOOKIE=\'$XCOOKIE\' \
 
 # Resume screensaver
 echo -e "${lpurp}Resuming Screensaver${NC}" 
-xset s on
-xset +dpms
-# TODO: Figure out what is happening on gnome 3
-# gsettings set org.gnome.desktop.session idle-delay 300
+if hash gsettings 2>/dev/null; then
+  gsettings set org.gnome.desktop.session idle-delay $IDLE 
+else
+  xset s on
+  xset +dpms
+fi 
 
 # Clean up Pulseaudio socket
 echo -e "${lpurp}Removing Pulseaudio socket at /tmp/.netflix-pulse-socket${NC}" 

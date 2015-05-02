@@ -15,7 +15,7 @@ A docker container to enable a Netflix player through PipeLight and Firefox.
 
 ## Overview
 
-Using Netflix on Linux is a cumbersome process today. Getting it up and running requires [Microsoft Silverlight](http://www.microsoft.com/silverlight/). Unfortunately, Microsoft doesn't have native Silverlight for Linux yet. This means deploying Silverlight on a Linux host involves a variety of workarounds, config changes, and even wine patches. The syncomm/netflix simplifies the process of launching and using Netflix on Linux.
+Using Netflix on Linux is a cumbersome process today. Getting it up and running requires [Microsoft Silverlight](http://www.microsoft.com/silverlight/). Unfortunately, Microsoft doesn't have native Silverlight for Linux yet. This means deploying Silverlight on a Linux host involves a variety of workarounds, config changes, and even wine patches. The syncomm/netflix container simplifies the process of launching and using Netflix on Linux.
 
 ### Features
 

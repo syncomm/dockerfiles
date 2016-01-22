@@ -39,7 +39,7 @@ then
 fi
 if [ ! -d /tmp/.X11-unix/ ];
 then
-    echo -e "${red}[ERROR] * No X11 socket transfered! Start this container with docker-spotify.sh${NC}"
+    echo -e "${red}[ERROR] * No X11 socket transfered! Start this container with docker-netflix.sh${NC}"
     exit 1
 fi
 export DISPLAY="unix:0"
@@ -50,7 +50,7 @@ xauth add $XCOOKIE
 echo -e "${lpurp}Checking for Pulseaudio${NC}" 
 if [ ! -e /tmp/.netflix-pulse-socket ];
 then
-    echo -e "${red}[ERROR] * No Pulseaudio socket transfered! Start this container with docker-spotify.sh${NC}"
+    echo -e "${red}[ERROR] * No Pulseaudio socket transfered! Start this container with docker-netflix.sh${NC}"
     echo
     exit 1
 fi

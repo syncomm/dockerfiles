@@ -56,7 +56,7 @@ fi
 echo -e "${lpurp}Building/preparing spotify container${NC}"
 xhost local:root
 chmod +x build.sh
-./build.sh
+./build.sh | tail -n 1
 
 # Launch syncomm/spotify container 
 echo -e "${lpurp}Launching spotify container${NC}" 

@@ -53,9 +53,13 @@ if [ $? -eq 1 ]; then
     echo -e "${lpurp}Container $CONTAINER created with id $CONTAINER_ID{NC}"
 fi
 
-# Launch syncomm/spotify container 
-echo -e "${lpurp}Launching syncomm/spotify container${NC}" 
+echo -e "${lpurp}Building/preparing spotify container${NC}"
 xhost local:root
+chmod +x build.sh
+./build.sh
+
+# Launch syncomm/spotify container 
+echo -e "${lpurp}Launching spotify container${NC}" 
 echo docker run --rm --name spotify \
   -e XCOOKIE=\'$XCOOKIE\' \
   -v /tmp/.X11-unix/:/tmp/.X11-unix/ \
